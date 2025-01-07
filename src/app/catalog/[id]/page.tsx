@@ -3,19 +3,23 @@ import NavigationHeader from '@/components/NavigationHeader';
 import { Button, Col, Layout, Row } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 // import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '@/styles/currentRecipePage.module.css'
+import { getData } from '@/services/firestoreService';
 
 const page:React.FC = () => {
     // const router = useRouter();
     // const { id } = router.query;
     const id =1
   
+    useEffect(()=>{
+      getData()
+    },[])
     
     const recipe = {
       id,
       title: 'Борщ',
-      imageUrl: '/placeholder.png', 
+      imageUrl: 'https://i.ibb.co/Gn2J1TB/viber-2021-11-04-09-11-37-260.jpg', 
       ingredients: [
         '3 свеклы',
         '2 картофелины',
