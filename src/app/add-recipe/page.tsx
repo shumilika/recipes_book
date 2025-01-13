@@ -1,15 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import { Input, Button, Form, Select, Upload, Row, Col, Space } from 'antd';
+import { Input, Button, Form, Select, Upload, Row, Col } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 // import { useRouter } from 'next/router';
 import styles from '@/styles/addRecipePage.module.css'
 
-const { TextArea } = Input;
 
 const page: React.FC = () => {
   // const router = useRouter();
   const [ingredients, setIngredients] = useState<string[]>(['']);
+  const [steps, setSteps] = useState<string[]>(['']);
   const [form] = Form.useForm();
 
   // Добавление нового ингредиента
@@ -21,6 +21,18 @@ const page: React.FC = () => {
   const removeIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
+  };
+
+  const handleStepChange = (value: string, index: number) => {
+    const newSteps = [...steps];
+    newSteps[index] = value;
+    setSteps(newSteps);
+  };
+
+  const addStep = () => setSteps([...steps, ""]);
+  const removeStep = (index: number) => {
+    const newSteps = steps.filter((_, i) => i !== index);
+    setSteps(newSteps);
   };
 
   // Обработка отправки формы
@@ -56,7 +68,7 @@ const page: React.FC = () => {
             <Select.Option value="dessert">Dessert</Select.Option>
             <Select.Option value="main-course">Main Course</Select.Option>
             <Select.Option value="snack">Snack</Select.Option>
-            {/* Добавьте другие категории по мере необходимости */}
+            
           </Select>
         </Form.Item>
 
@@ -92,17 +104,42 @@ const page: React.FC = () => {
           </Button>
         </Form.Item>
 
+        
+
         <Form.Item
           label="Preparation Steps"
-          name="steps"
           rules={[{ required: true, message: 'Please enter the preparation steps!' }]}
         >
-          <TextArea
-            placeholder="Enter the preparation steps"
-            rows={4}
+        {steps.map((step, index) => (
+         <Row key={index} gutter={16} align="middle">
+              <Col span={18}>
+          <Input
+            value={step}
+            onChange={(e) => handleStepChange(e.target.value, index)}
+            placeholder={`Step ${index + 1}`}
           />
+          </Col>
+          <Col span={6}>
+          <Button onClick={() => removeStep(index)} type='text' danger>
+            Remove
+          </Button>
+          </Col>
+          </Row>
+        
+      ))}
+      <Button onClick={addStep} type="dashed" block>
+        Add Step
+      </Button>
         </Form.Item>
 
+        <Form.Item
+          label="Origin url"
+          name="url"
+          rules={[{  message: 'Please enter origin url!' }]}
+        >
+          <Input placeholder="Enter url" />
+        </Form.Item>
+        
         <Form.Item label="Upload Image" name="image">
           <Upload
             name="image"
@@ -112,7 +149,10 @@ const page: React.FC = () => {
           >
             <Button icon={<UploadOutlined />}>Upload Image</Button>
           </Upload>
+
+         
         </Form.Item>
+
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block>
