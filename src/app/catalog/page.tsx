@@ -1,12 +1,32 @@
 'use client';
-import { Button, Col, Layout, Row } from 'antd';
-import React from 'react';
+import { Button, Col, Layout, Row, Spin } from 'antd';
+import React, { useEffect } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import styles from '@/styles/catalog.module.css'
 import { Content } from 'antd/es/layout/layout';
 import NavigationHeader from '@/components/NavigationHeader';
+import { RootState } from '@/lib/store';
+import { fetchRecipes } from '@/lib/features/recipes/recipesSlice';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 const page:React.FC = () => {
+
+  const {recipesList, loading, error} = useAppSelector((state: RootState)=>state.recipes) 
+  const dispatch = useAppDispatch()
+
+  useEffect(()=>{
+    dispatch(fetchRecipes())
+  },[dispatch])
+
+  if (loading) {
+    return <Spin tip="Loading recipes..." />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+
     return (
      
         <Layout className={styles.layout}>
@@ -21,26 +41,14 @@ const page:React.FC = () => {
       </Button>
 
       <Row gutter={[16, 16]} justify="center" className={styles.row}>
-        <Col span={4}>
-          <Button className={styles.imageButton} href={'/catalog/1'}>
-            <img src="/placeholder.png" alt="Recipe 1" />
-          </Button>
-        </Col>
-        <Col span={4}>
-          <Button className={styles.imageButton}>
-            <img src="/placeholder.png" alt="Recipe 2" />
-          </Button>
-        </Col>
-        <Col span={4}>
-          <Button className={styles.imageButton}>
-            <img src="/placeholder.png" alt="Recipe 3" />
-          </Button>
-        </Col>
-        <Col span={4}>
-          <Button className={styles.imageButton}>
-            <img src="/placeholder.png" alt="Recipe 4" />
-          </Button>
-        </Col>
+      {recipesList.map((recipe) => (
+            <Col span={4} key={recipe.id}>
+              <Button className={styles.imageButton} href={`/catalog/${recipe.id}`}>
+                <img src={recipe.img_url || '/placeholder.png'} alt={recipe.title} />
+              </Button>
+              <div className={styles.recipeTitle}>{recipe.title}</div>
+            </Col>
+          ))}
       </Row>
     </Content>
         </Layout>
