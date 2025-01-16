@@ -1,13 +1,10 @@
 'use client';
 import { Button } from "antd";
 import styles from "@/styles/page.module.css";
-import NavigationHeader from "@/components/NavigationHeader";
-
 
 export default function Home() {
   return (
     <div className={styles.container}>
-        <NavigationHeader/>
       <main className={styles.main}>
       <h2 className={styles.tagline}>Create your own recipe's e-book</h2>
       <div className={styles.buttonGroup}>
