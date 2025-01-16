@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import styles from '@/styles/catalog.module.css'
 import { Content } from 'antd/es/layout/layout';
-import NavigationHeader from '@/components/NavigationHeader';
 import { RootState } from '@/lib/store';
 import { fetchRecipes } from '@/lib/features/recipes/recipesSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -19,18 +18,16 @@ const page:React.FC = () => {
   },[dispatch])
 
   if (loading) {
-    return <Spin tip="Loading recipes..." />;
+    return <Spin/>;
   }
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-
     return (
      
         <Layout className={styles.layout}>
-          <NavigationHeader/>
            <Content className={styles.content}>
       <Button
         icon={<SearchOutlined />}

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { wrapper } from "@/lib/store";
 import StoreProvider from "./StoreProvider";
+import AppLayout from "./AppLayout";
 
 
 export const metadata: Metadata = {
@@ -19,7 +19,11 @@ export const metadata: Metadata = {
     return (
       <html lang="en">
         <body>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <AppLayout>
+            {children}
+          </AppLayout>
+        </StoreProvider>
         </body>
       </html>
     );
