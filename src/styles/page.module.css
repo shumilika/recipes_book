@@ -3,29 +3,7 @@
     flex-direction: column;
     min-height: 100vh;
     font-family: Arial, sans-serif;
-    background-color: #fff4e1; 
     color: #333;
-  }
-  
-  
-  
-  .navList {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navLink {
-    text-decoration: none;
-    color: #fff;
-    font-size: 16px;
-    transition: color 0.3s ease;
-  }
-  
-  .navLink:hover {
-    color: #f5a623; /* Оранжевый акцент */
   }
   
   .main {
@@ -41,27 +19,50 @@
   .tagline {
     font-size: 28px;
     margin-bottom: 20px;
-    color: #8d6e63;
+    color: #3B766C;
   }
   
   .buttonGroup {
     display: flex;
     gap: 20px;
   }
+
+  .buttonGroup .ant-btn-primary {
+    background-color: #82C7D9; /* Голубой */
+    border-color: #82C7D9;
+  }
+  
+  .buttonGroup .ant-btn-primary:hover {
+    background-color: #A8D5BA; /* Нежно-зеленый */
+    border-color: #A8D5BA;
+  }
+  
+  .buttonGroup .ant-btn-default {
+    border-color: #3B766C;
+    color: #3B766C;
+  }
+  
+  .buttonGroup .ant-btn-default:hover {
+    color: #82C7D9; /* Голубой */
+    border-color: #82C7D9;
+  }
+
+  /* footerPage */
   
   .footer {
     text-align: center;
     padding: 10px 20px;
-    background-color: #8d6e63;
+    background-color: #3B766C;
     color: #fff;
   }
   
   .footerLink {
-    color: #f5a623;
+    color: #82C7D9;
     text-decoration: none;
   }
   
   .footerLink:hover {
     text-decoration: underline;
+    color: #A8D5BA;
   }
   

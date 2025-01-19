@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #8d6e63; 
+  background-color: #82C7D9;; 
   color: #fff;
 }
   
@@ -13,11 +13,23 @@
   margin: 0;
 }
 
-.logo a:hover{
+.logo a{
   color: #fff;
+  text-decoration: none;
+}
+.logo a:hover{
+  color: #A8D5BA;
 }
   
   .menu {
     background: transparent;
+  }
+
+  .menu .ant-menu-item a{
+    color: #fff;
+  }
+
+  .menu .ant-menu-item-active a:hover {
+    color: #A8D5BA; /* Нежно-зеленый акцент */
   }
   
