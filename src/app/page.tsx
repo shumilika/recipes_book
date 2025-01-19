@@ -12,19 +12,6 @@ export default function Home() {
       <Button href={'/add-recipe'} size="large">add recipe</Button>
       </div>
       </main>
-      <footer className={styles.footer}>
-      <p>
-          <a
-            href="https://github.com/shumilika"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.footerLink}
-          >
-            GitHub
-          </a>
-          , 2025
-        </p>
-      </footer>
     </div>
   );
 }
