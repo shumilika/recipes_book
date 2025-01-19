@@ -2,22 +2,21 @@
 import React, { useState } from 'react';
 import { Input, Button, Form, Select, Upload, Row, Col } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-// import { useRouter } from 'next/router';
 import styles from '@/styles/addRecipePage.module.css'
 
 
 const page: React.FC = () => {
-  // const router = useRouter();
+
   const [ingredients, setIngredients] = useState<string[]>(['']);
   const [steps, setSteps] = useState<string[]>(['']);
   const [form] = Form.useForm();
 
-  // Добавление нового ингредиента
+
   const addIngredient = () => {
     setIngredients([...ingredients, '']);
   };
 
-  // Удаление ингредиента
+
   const removeIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
@@ -35,11 +34,8 @@ const page: React.FC = () => {
     setSteps(newSteps);
   };
 
-  // Обработка отправки формы
   const onFinish = (values: any) => {
     console.log(values);
-    // Здесь будет код для отправки данных на сервер или в Firebase
-    // router.push('/catalog'); // Перенаправление в каталог после сохранения
   };
 
   return (

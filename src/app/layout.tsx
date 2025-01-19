@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
-import AppLayout from "./AppLayout";
+import NavigationHeader from "@/components/NavigationHeader";
+import FooterPage from "@/components/FooterPage";
 
 
 export const metadata: Metadata = {
@@ -19,11 +20,13 @@ export const metadata: Metadata = {
     return (
       <html lang="en">
         <body>
+        <NavigationHeader />
+        <main>
         <StoreProvider>
-          <AppLayout>
             {children}
-          </AppLayout>
         </StoreProvider>
+        </main>
+        <FooterPage/>
         </body>
       </html>
     );
