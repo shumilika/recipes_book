@@ -2,30 +2,8 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background-color: #fff4e1; 
-    color: #333;
-  }
-  
-  
-  
-  .navList {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navLink {
-    text-decoration: none;
-    color: #fff;
-    font-size: 16px;
-    transition: color 0.3s ease;
-  }
-  
-  .navLink:hover {
-    color: #f5a623; /* Оранжевый акцент */
+    /* color: var(--dark-green); */
+    /* background-color: var(--background); */
   }
   
   .main {
@@ -41,27 +19,54 @@
   .tagline {
     font-size: 28px;
     margin-bottom: 20px;
-    color: #8d6e63;
   }
   
   .buttonGroup {
     display: flex;
     gap: 20px;
   }
+
+  .buttonGroup .catalog_btn {
+    background-color: var(--primary); 
+    border:none;
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .buttonGroup .catalog_btn:hover {
+    background-color: var(--secondary) !important; 
+    /* border-color: var(--dark-green) !important; */
+    color: #fff !important;
+  }
+  
+  .buttonGroup .add_btn {
+    border: none;
+    background-color: var(--neutral);
+    color: var(--primary);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .buttonGroup .add_btn:hover {
+    color: #fff !important;
+    background-color: var(--secondary) !important;
+  }
+
+  /* footerPage */
   
   .footer {
     text-align: center;
     padding: 10px 20px;
-    background-color: #8d6e63;
-    color: #fff;
+    background-color: var(--dark-green);
+    color: var(--neutral-white);
   }
   
   .footerLink {
-    color: #f5a623;
+    color: var(--light-green);
     text-decoration: none;
   }
   
   .footerLink:hover {
     text-decoration: underline;
+    color: var(--very-light-green);
   }
   

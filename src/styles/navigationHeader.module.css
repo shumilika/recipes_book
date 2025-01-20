@@ -3,8 +3,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #8d6e63; 
-  color: #fff;
+  background-color: var(--dark-green); 
+  color: var(--neutral-white);
 }
   
 .logo {
@@ -13,11 +13,24 @@
   margin: 0;
 }
 
+.logo a{
+  color: var(--neutral-white);
+  text-decoration: none;
+}
 .logo a:hover{
-  color: #fff;
+  color: var(--light-green);
 }
   
   .menu {
     background: transparent;
+  }
+  
+
+  .menu li a{
+    color: var(--neutral-white) !important;
+  }
+
+  .menu li a:hover {
+    color: var(--medium-green) !important;
   }
   

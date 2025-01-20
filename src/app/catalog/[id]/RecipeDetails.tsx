@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { fetchRecipeById } from '@/lib/features/recipes/recipesSlice';
-import { Spin, Layout, Row, Col } from 'antd';
+import { Spin, Layout, Row, Col, Button } from 'antd';
 import styles from '@/styles/currentRecipePage.module.css';
 
 export default function RecipeDetails({ recipeId }: { recipeId: string }) {
@@ -18,7 +18,7 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   if (!currentRecipe) return <div>Recipe not found</div>;
 
   return (
-    <Layout>
+    <Layout className={styles.content}>
       <Row justify="center" className={styles.recipeHeader}>
         <Col span={20}>
           <h1 className={styles.recipeTitle}>{currentRecipe.title}</h1>
@@ -31,7 +31,8 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
       </Row>
       <Row justify="center" className={styles.recipeDetails}>
         <Col span={20}>
-          <h2>Ингредиенты:</h2>
+         <div className={styles.ingredients}>
+         <h2>Ингредиенты:</h2>
           <ul>
             {currentRecipe.ingredients.map((ingredient, index) => (
                 <li key={index}>
@@ -39,12 +40,27 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
                 </li>
             ))}
           </ul>
-          <h2>Шаги приготовления:</h2>
+         </div>
+         <div className={styles.steps}>
+         <h2>Шаги приготовления:</h2>
           <ol>
             {currentRecipe.cooking_steps.map((step, index) => (
               <li key={index}>{step}</li>
             ))}
           </ol>
+         </div>
+         <Row justify="center" className={styles.buttonsRow}>
+              <Col>
+                <Button type="primary" className={styles.editButton}>
+                  Редактировать
+                </Button>
+              </Col>
+              <Col>
+                <Button color={"danger"} className={styles.deleteButton}>
+                  Удалить
+                </Button>
+              </Col>
+            </Row>
         </Col>
       </Row>
     </Layout>
