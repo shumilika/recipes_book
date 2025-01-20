@@ -1,5 +1,7 @@
 import RecipeDetails from './RecipeDetails';
 
-export default function RecipePage({ params }: { params: { id: string } }) {
-  return <RecipeDetails recipeId={params.id} />;
+export default async function RecipePage({ params }: { params: { id: string } }) {
+  const { id } = await params;
+
+  return <RecipeDetails recipeId={id} />;
 }

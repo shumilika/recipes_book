@@ -8,8 +8,8 @@ export default function Home() {
       <main className={styles.main}>
       <h2 className={styles.tagline}>Create your own recipe's e-book</h2>
       <div className={styles.buttonGroup}>
-      <Button href={'/catalog'} type="primary" size="large">see recipes</Button>
-      <Button href={'/add-recipe'} size="large">add recipe</Button>
+      <Button href={'/catalog'} size="large" className={styles.catalog_btn}>see recipes</Button>
+      <Button href={'/add-recipe'} size="large" className={styles.add_btn}>add recipe</Button>
       </div>
       </main>
     </div>

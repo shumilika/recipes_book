@@ -1,6 +1,10 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FEFBF0;
+  --primary: #ADCDD2; 
+  --secondary: #ACD1C1;
+  --neutral: #F2E4CC;
+  --text-primary: #6DA79E;
+  --text-secondary: #A69383;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,9 +21,11 @@ body {
 }
 
 body {
-  background-color: #E6F2F2; 
-  color: #1F4E4E; 
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-color: var(--background); 
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -31,12 +37,46 @@ body {
 }
 
 a {
-  color: inherit;
+  color: var(--primary);
   text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover{
+  color: var(--secondary);
 }
 
 main{
   min-height: 100vh;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* button {
+  font-family: 'Inter', sans-serif;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+} */
+
+
+
+/* main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+} */
+
+header, footer {
+  background-color: var(--primary);
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px;
 }
 
 @media (prefers-color-scheme: dark) {
