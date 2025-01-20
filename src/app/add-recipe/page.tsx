@@ -1,24 +1,47 @@
 'use client';
 import React, { useState } from 'react';
-import { Input, Button, Form, Select, Upload, Row, Col } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Input, Button, Form, Select, Row, Col, InputNumber } from 'antd';
 import styles from '@/styles/addRecipePage.module.css'
+import UploadImg from '@/components/UploadImg';
 
+
+interface Ingredient {
+  amount: number;
+  name: string;
+  units: string;
+}
 
 const page: React.FC = () => {
 
-  const [ingredients, setIngredients] = useState<string[]>(['']);
+  const [ingredients, setIngredients] = useState<
+  { amount: number; name: string; units: string }[]
+>([{ amount: 0, name: '', units: '' }]);
   const [steps, setSteps] = useState<string[]>(['']);
+  const [imgUrl, setImgUrl] = useState<string>('')
   const [form] = Form.useForm();
 
+  const ImgUrlOnChange = (value:string) => {
+    setImgUrl(value)
+  }
 
   const addIngredient = () => {
-    setIngredients([...ingredients, '']);
+    setIngredients([...ingredients, { amount: 0, name: '', units: '' }]);
   };
 
+ 
 
   const removeIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
+    setIngredients(newIngredients);
+  };
+
+  const updateIngredient = (
+    index: number,
+    field: keyof Ingredient,
+    value: string | number
+  ) => {
+    const newIngredients = [...ingredients];
+    newIngredients[index][field] = value as never; 
     setIngredients(newIngredients);
   };
 
@@ -36,6 +59,7 @@ const page: React.FC = () => {
 
   const onFinish = (values: any) => {
     console.log(values);
+    console.log('imgurl: '+imgUrl)
   };
 
   return (
@@ -68,37 +92,56 @@ const page: React.FC = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item
-          label="Ingredients"
-        >
-          {ingredients.map((ingredient, index) => (
-            <Row key={index} gutter={16} align="middle">
-              <Col span={18}>
-                <Input
-                  placeholder="Enter ingredient"
-                  value={ingredient}
-                  onChange={(e) => {
-                    const newIngredients = [...ingredients];
-                    newIngredients[index] = e.target.value;
-                    setIngredients(newIngredients);
-                  }}
-                />
-              </Col>
-              <Col span={6}>
-                <Button
-                  danger
-                  onClick={() => removeIngredient(index)}
-                  type="text"
-                >
-                  Remove
-                </Button>
-              </Col>
-            </Row>
-          ))}
-          <Button type="dashed" onClick={addIngredient} block>
-            Add Ingredient
-          </Button>
-        </Form.Item>
+        <Form.Item label="Ingredients">
+      {ingredients.map((ingredient, index) => (
+        <Row key={index} gutter={16} align="middle">
+          <Col span={3}>
+            <InputNumber
+              placeholder="Amount"
+              min={1}
+              value={ingredient.amount}
+              onChange={(value) => updateIngredient(index, 'amount', value || 1)}
+            />
+          </Col>
+          <Col span={12}>
+            <Input
+              placeholder="Ingredient name"
+              value={ingredient.name}
+              onChange={(e) =>
+                updateIngredient(index, 'name', e.target.value)
+              }
+            />
+          </Col>
+          <Col span={4}>
+            <Select
+              placeholder="Units"
+              value={ingredient.units}
+              onChange={(value) => updateIngredient(index, 'units', value)}
+            >
+              <Select.Option value="kg">kg</Select.Option>
+              <Select.Option value="g">g</Select.Option>
+              <Select.Option value="l">l</Select.Option>
+              <Select.Option value="ml">ml</Select.Option>
+              <Select.Option value="pcs">pcs</Select.Option>
+              <Select.Option value="tbsp">tbsp</Select.Option>
+              <Select.Option value="tsp">tsp</Select.Option>
+            </Select>
+          </Col>
+          <Col span={2}>
+            <Button
+              danger
+              onClick={() => removeIngredient(index)}
+              type="text"
+            >
+              Remove
+            </Button>
+          </Col>
+        </Row>
+      ))}
+      <Button type="dashed" onClick={addIngredient} block>
+        Add Ingredient
+      </Button>
+    </Form.Item>
 
         
 
@@ -136,17 +179,8 @@ const page: React.FC = () => {
           <Input placeholder="Enter url" />
         </Form.Item>
         
-        <Form.Item label="Upload Image" name="image">
-          <Upload
-            name="image"
-            action="/upload"
-            listType="picture-card"
-            showUploadList={false}
-          >
-            <Button icon={<UploadOutlined />}>Upload Image</Button>
-          </Upload>
-
-         
+        <Form.Item name="image" >
+          <UploadImg setUrl={ImgUrlOnChange} />
         </Form.Item>
 
 
