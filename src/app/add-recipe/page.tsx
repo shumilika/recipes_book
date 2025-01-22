@@ -4,6 +4,8 @@ import { Input, Button, Form, Select, Row, Col, InputNumber } from 'antd';
 import styles from '@/styles/addRecipePage.module.css'
 import UploadImg from '@/components/UploadImg';
 import { categories, units } from '@/constants/constants';
+import { addDoc, collection } from '@firebase/firestore';
+import { db } from '@/services/firebase.config';
 
 
 interface Ingredient {
@@ -15,10 +17,13 @@ interface Ingredient {
 
 const page: React.FC = () => {
 
+  const [name, setName] = useState<string>('')
+  const [category, setCategory] = useState<string>('')
+  const [url, setUrl] = useState<string>('')
   const [ingredients, setIngredients] = useState<
     { amount: number; name: string; units: string }[]
   >([{ amount: 0, name: '', units: '' }]);
-  const [steps, setSteps] = useState<string[]>(['']);
+  const [steps, setSteps] = useState<string[]>([''])
   const [imgUrl, setImgUrl] = useState<string>('')
   const [form] = Form.useForm();
 
@@ -26,14 +31,25 @@ const page: React.FC = () => {
     setImgUrl(value)
   }
 
+  const nameOnChange = (value:string) => {
+    setName(value)
+  }
+
+  const categoryOnChange = (value:string) => {
+    setCategory(value)
+  }
+  const urlOnChange = (value:string) => {
+    setUrl(value)
+  }
+
   const addIngredient = () => {
     setIngredients([...ingredients, { amount: 0, name: '', units: '' }]);
-  };
+  }
 
   const removeIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
-  };
+  }
 
   const updateIngredient = (
     index: number,
@@ -43,24 +59,33 @@ const page: React.FC = () => {
     const newIngredients = [...ingredients];
     newIngredients[index][field] = value as never; 
     setIngredients(newIngredients);
-  };
+  }
 
   const handleStepChange = (value: string, index: number) => {
     const newSteps = [...steps];
     newSteps[index] = value;
     setSteps(newSteps);
-  };
+  }
 
   const addStep = () => setSteps([...steps, ""]);
+
   const removeStep = (index: number) => {
     const newSteps = steps.filter((_, i) => i !== index);
     setSteps(newSteps);
-  };
+  }
 
-  const onFinish = (values: any) => {
-    console.log(values);
-    console.log('imgurl: '+imgUrl)
-  };
+  const onFinish = async () => {
+     
+    const result = {
+      title:name,
+      category,
+      cooking_steps:steps,
+      img_url:imgUrl,
+      ingredients,
+      origin:url,
+    }
+    await addDoc(collection(db, "recipes"), result)
+  }
 
   return (
     <div className={styles.container}>
@@ -76,7 +101,7 @@ const page: React.FC = () => {
           name="name"
           rules={[{ required: true, message: 'Please enter the recipe name!' }]}
         >
-          <Input placeholder="Enter recipe name" />
+          <Input placeholder="Enter recipe name" value={name} onChange={(event)=>nameOnChange(event.target.value)} />
         </Form.Item>
 
         <Form.Item
@@ -84,13 +109,17 @@ const page: React.FC = () => {
           name="category"
           rules={[{ required: true, message: 'Please select a category!' }]}
         >
-          <Select placeholder="Select category">{categories.map((category, index)=>
+          <Select placeholder="Select category"
+            onChange={categoryOnChange}
+          >{categories.map((category, index)=>
              <Select.Option value={category} key={index}>{category}</Select.Option>
           )}            
           </Select>
         </Form.Item>
 
-        <Form.Item label="Ingredients">
+        <Form.Item label="Ingredients"
+          // rules={[{ required: true, message: 'Please enter ingredients!' }]}
+        >
       {ingredients.map((ingredient, index) => (
         <Row key={index} gutter={16} align="middle">
           <Col span={3}>
@@ -141,7 +170,7 @@ const page: React.FC = () => {
 
         <Form.Item
           label="Preparation Steps"
-          rules={[{ required: true, message: 'Please enter the preparation steps!' }]}
+          // rules={[{ required: true, message: 'Please enter the preparation steps!' }]}
         >
         {steps.map((step, index) => (
          <Row key={index} gutter={16} align="middle">
@@ -170,7 +199,7 @@ const page: React.FC = () => {
           name="url"
           rules={[{  message: 'Please enter origin url!' }]}
         >
-          <Input placeholder="Enter url" />
+          <Input placeholder="Enter url" value={url} onChange={(event)=>urlOnChange(event.target.value)}/>
         </Form.Item>
         
         <Form.Item name="image" >
