@@ -33,13 +33,11 @@ const UploadImg:React.FC<UploadProps> = ({setUrl}) => {
             message.success('Image uploaded successfully!');
             onSuccess(result);
             setUrl(result.data.url)
-            // console.log('Uploaded Image URL:', result.data.url); 
           } else {
             message.error(result.error.message || 'Upload failed.');
             onError(new Error(result.error.message || 'Upload failed.'));
           }
         } catch (error) {
-        //   console.error('Upload Error:', error);
           message.error('An error occurred during upload.');
           onError(error);
         }

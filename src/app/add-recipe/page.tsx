@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Input, Button, Form, Select, Row, Col, InputNumber } from 'antd';
 import styles from '@/styles/addRecipePage.module.css'
 import UploadImg from '@/components/UploadImg';
+import { categories, units } from '@/constants/constants';
 
 
 interface Ingredient {
@@ -11,11 +12,12 @@ interface Ingredient {
   units: string;
 }
 
+
 const page: React.FC = () => {
 
   const [ingredients, setIngredients] = useState<
-  { amount: number; name: string; units: string }[]
->([{ amount: 0, name: '', units: '' }]);
+    { amount: number; name: string; units: string }[]
+  >([{ amount: 0, name: '', units: '' }]);
   const [steps, setSteps] = useState<string[]>(['']);
   const [imgUrl, setImgUrl] = useState<string>('')
   const [form] = Form.useForm();
@@ -27,8 +29,6 @@ const page: React.FC = () => {
   const addIngredient = () => {
     setIngredients([...ingredients, { amount: 0, name: '', units: '' }]);
   };
-
- 
 
   const removeIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
@@ -84,11 +84,9 @@ const page: React.FC = () => {
           name="category"
           rules={[{ required: true, message: 'Please select a category!' }]}
         >
-          <Select placeholder="Select category">
-            <Select.Option value="dessert">Dessert</Select.Option>
-            <Select.Option value="main-course">Main Course</Select.Option>
-            <Select.Option value="snack">Snack</Select.Option>
-            
+          <Select placeholder="Select category">{categories.map((category, index)=>
+             <Select.Option value={category} key={index}>{category}</Select.Option>
+          )}            
           </Select>
         </Form.Item>
 
@@ -118,13 +116,9 @@ const page: React.FC = () => {
               value={ingredient.units}
               onChange={(value) => updateIngredient(index, 'units', value)}
             >
-              <Select.Option value="kg">kg</Select.Option>
-              <Select.Option value="g">g</Select.Option>
-              <Select.Option value="l">l</Select.Option>
-              <Select.Option value="ml">ml</Select.Option>
-              <Select.Option value="pcs">pcs</Select.Option>
-              <Select.Option value="tbsp">tbsp</Select.Option>
-              <Select.Option value="tsp">tsp</Select.Option>
+              {units.map((unit, index)=>
+              <Select.Option value={unit} key={index}>{unit}</Select.Option>
+              )}
             </Select>
           </Col>
           <Col span={2}>
