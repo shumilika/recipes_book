@@ -2,12 +2,25 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { fetchRecipeById } from '@/lib/features/recipes/recipesSlice';
-import { Spin, Layout, Row, Col, Button } from 'antd';
+import { Spin, Layout, Row, Col, Button, Popconfirm, notification } from 'antd';
+import type { PopconfirmProps } from 'antd';
 import styles from '@/styles/currentRecipePage.module.css';
+import { deleteDoc, doc } from '@firebase/firestore';
+import { db } from '@/services/firebase.config';
+import { useRouter } from 'next/navigation';
 
 export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   const dispatch = useAppDispatch();
   const { currentRecipe, loading, error } = useAppSelector((state) => state.recipes);
+  const [api, contextHolder] = notification.useNotification();
+  const router = useRouter()
+
+  const openNotification = (type: 'success' | 'error', message: string) => {
+    api[type]({
+      message,
+      placement: 'top',
+    });
+  };
 
   useEffect(() => {
     dispatch(fetchRecipeById(recipeId));
@@ -16,6 +29,23 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   if (loading) return <Spin/>;
   if (error) return <div>Error: {error}</div>;
   if (!currentRecipe) return <div>Recipe not found</div>;
+
+  const handleDeleteRecipe = async () => {
+    try {
+      await deleteDoc(doc(db, "recipes", recipeId));
+      openNotification('success','Recipe deleted successfully!')
+      setTimeout(() => {
+        router.push('/catalog');
+      }, 2000);
+    } catch (error) {
+      openNotification('error','Failed to delete the recipe!')
+    }
+  };
+
+  const confirm: PopconfirmProps['onConfirm'] = (e) => {
+    handleDeleteRecipe()
+  };
+  
 
   return (
     <Layout className={styles.content}>
@@ -56,9 +86,18 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
                 </Button>
               </Col>
               <Col>
-                <Button color={"danger"} className={styles.deleteButton}>
-                  Удалить
-                </Button>
+              {contextHolder}
+                <Popconfirm
+                  title="Delete the recipe"
+                  description="Are you sure you want to delete this recipe?"
+                  onConfirm={confirm}
+                  okText="Delete"
+                  cancelText="Cancel"
+                >
+                  <Button color={"danger"} className={styles.deleteButton}>
+                    Удалить
+                  </Button>
+                </Popconfirm>
               </Col>
             </Row>
         </Col>
