@@ -6,6 +6,7 @@ import UploadImg from '@/components/UploadImg';
 import { categories, units } from '@/constants/constants';
 import { addDoc, collection } from '@firebase/firestore';
 import { db } from '@/services/firebase.config';
+import { useRouter } from 'next/navigation';
 
 
 interface Ingredient {
@@ -26,6 +27,7 @@ const page: React.FC = () => {
   const [steps, setSteps] = useState<string[]>([''])
   const [imgUrl, setImgUrl] = useState<string>('')
   const [form] = Form.useForm();
+  const router = useRouter()
 
   const ImgUrlOnChange = (value:string) => {
     setImgUrl(value)
@@ -84,7 +86,14 @@ const page: React.FC = () => {
       ingredients,
       origin:url,
     }
-    await addDoc(collection(db, "recipes"), result)
+    try{
+      const docRef = await addDoc(collection(db, "recipes"), result)
+      router.push(`/catalog/${docRef.id}`)
+    }
+    catch(error){
+
+    }
+    
   }
 
   return (
