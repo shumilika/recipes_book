@@ -20,7 +20,7 @@ const UploadImg:React.FC<UploadProps> = ({setUrl}) => {
     
         try {
           const response = await fetch(
-            'https://api.imgbb.com/1/upload?expiration=600',
+            `https://api.imgbb.com/1/upload`,
             {
               method: 'POST',
               body: formData,
