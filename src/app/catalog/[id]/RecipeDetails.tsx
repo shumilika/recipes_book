@@ -30,6 +30,10 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   if (error) return <div>Error: {error}</div>;
   if (!currentRecipe) return <div>Recipe not found</div>;
 
+  const handleEdit = () =>{
+    router.push(`/edit-recipe/${recipeId}`)
+  }
+
   const handleDeleteRecipe = async () => {
     try {
       await deleteDoc(doc(db, "recipes", recipeId));
@@ -81,7 +85,7 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
          </div>
          <Row justify="center" className={styles.buttonsRow}>
               <Col>
-                <Button type="primary" className={styles.editButton}>
+                <Button type="primary" className={styles.editButton} onClick={handleEdit}>
                   Редактировать
                 </Button>
               </Col>
