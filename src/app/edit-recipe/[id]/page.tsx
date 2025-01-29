@@ -1,12 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Button, Form, Select, Row, Col, InputNumber } from 'antd';
 import styles from '@/styles/addRecipePage.module.css'
 import UploadImg from '@/components/UploadImg';
 import { categories, units } from '@/constants/constants';
-import { addDoc, collection } from '@firebase/firestore';
+import { doc, updateDoc } from '@firebase/firestore';
 import { db } from '@/services/firebase.config';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useAppSelector } from '../../hooks';
 
 
 interface Ingredient {
@@ -17,7 +18,9 @@ interface Ingredient {
 
 
 const page: React.FC = () => {
-
+  
+  const { id: recipeId } = useParams() as {id: string}
+  const { currentRecipe } = useAppSelector((state) => state.recipes);
   const [name, setName] = useState<string>('')
   const [category, setCategory] = useState<string>('')
   const [url, setUrl] = useState<string>('')
@@ -28,6 +31,27 @@ const page: React.FC = () => {
   const [imgUrl, setImgUrl] = useState<string>('')
   const [form] = Form.useForm();
   const router = useRouter()
+
+  useEffect(() => {
+    if (currentRecipe) {
+      setName(currentRecipe.title || '');
+      setCategory(currentRecipe.category || '');
+      setUrl(currentRecipe.origin || '');
+      setIngredients(currentRecipe.ingredients || [{ amount: 0, name: '', units: '' }]);
+      setSteps(currentRecipe.cooking_steps || ['']);
+      setImgUrl(currentRecipe.img_url || '');
+
+     
+      form.setFieldsValue({
+        name: currentRecipe.title,
+        category: currentRecipe.category,
+        url: currentRecipe.origin,
+        image: currentRecipe.img_url,
+      });
+    }
+  }, [currentRecipe, form]);
+
+ 
 
   const ImgUrlOnChange = (value:string) => {
     setImgUrl(value)
@@ -58,10 +82,12 @@ const page: React.FC = () => {
     field: keyof Ingredient,
     value: string | number
   ) => {
-    const newIngredients = [...ingredients];
-    newIngredients[index][field] = value as never; 
-    setIngredients(newIngredients);
-  }
+    setIngredients((prevIngredients) =>
+      prevIngredients.map((ingredient, i) =>
+        i === index ? { ...ingredient, [field]: value } : ingredient
+      )
+    );
+  };
 
   const handleStepChange = (value: string, index: number) => {
     const newSteps = [...steps];
@@ -78,7 +104,7 @@ const page: React.FC = () => {
 
   const onFinish = async () => {
      
-    const result = {
+    const updateRecipe = {
       title:name,
       category,
       cooking_steps:steps,
@@ -86,9 +112,10 @@ const page: React.FC = () => {
       ingredients,
       origin:url,
     }
+    
     try{
-      const docRef = await addDoc(collection(db, "recipes"), result)
-      router.push(`/catalog/${docRef.id}`)
+       await updateDoc(doc(db, "recipes",recipeId), updateRecipe)
+      router.push(`/catalog/${recipeId}`)
     }
     catch(error){
 
@@ -98,7 +125,7 @@ const page: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Add a New Recipe</h2>
+      <h2 className={styles.title}>Edit the Recipe</h2>
       <Form
         form={form}
         layout="vertical"
