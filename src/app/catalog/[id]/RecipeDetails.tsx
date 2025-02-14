@@ -14,7 +14,7 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   const { currentRecipe, loading, error } = useAppSelector((state) => state.recipes);
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
-
+  
   const openNotification = (type: 'success' | 'error', message: string) => {
     api[type]({
       message,
@@ -27,8 +27,9 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   }, [recipeId, dispatch]);
 
   if (loading) return <Spin/>;
-  if (error) return <div>Error: {error}</div>;
   if (!currentRecipe) return <div>Recipe not found</div>;
+
+  
 
   const handleEdit = () =>{
     router.push(`/edit-recipe/${recipeId}`)
@@ -53,6 +54,7 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
 
   return (
     <Layout className={styles.content}>
+    
       <Row justify="center" className={styles.recipeHeader}>
         <Col span={20}>
           <h1 className={styles.recipeTitle}>{currentRecipe.title}</h1>
