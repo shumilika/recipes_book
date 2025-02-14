@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { Button, Result } from 'antd';
+import { BugOutlined } from '@ant-design/icons';
 
 export default function CatalogError({
   error,
@@ -16,7 +17,8 @@ export default function CatalogError({
 
   return (
     <Result
-      status="500"
+    icon={<BugOutlined />}
+      // status="500"
       title="Failed to Load Recipes"
       subTitle="An error occurred while fetching recipes. Please try again."
       extra={

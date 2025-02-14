@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { Button, Result } from 'antd';
+import { BugOutlined } from '@ant-design/icons';
 
 export default function GlobalError({
   error,
@@ -14,9 +15,12 @@ export default function GlobalError({
     console.error('Global error:', error);
   }, [error]);
 
-  return (
+  return (<html>
+    <body>
+      
     <Result
-      status="500"
+    icon={<BugOutlined />}
+      // status="500"
       title="Something went wrong!"
       subTitle="An unexpected error occurred. Please try again."
       extra={
@@ -25,5 +29,7 @@ export default function GlobalError({
         </Button>
       }
     />
+    </body>
+  </html>
   );
 }
