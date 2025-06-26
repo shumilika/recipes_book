@@ -1,9 +1,6 @@
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    /* color: var(--dark-green); */
-    /* background-color: var(--background); */
   }
   
   .main {
@@ -14,6 +11,7 @@
     align-items: center;
     padding: 40px;
     text-align: center;
+    min-height: 85vh;
   }
   
   .tagline {

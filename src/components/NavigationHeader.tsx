@@ -1,7 +1,9 @@
 'use client';
-import { Menu, Layout } from 'antd';
+import { Menu, Layout, ConfigProvider } from 'antd';
 import styles from '@/styles/navigationHeader.module.css';
 import Link from 'next/link';
+import { useState } from 'react';
+
 
 const { Header } = Layout;
 
@@ -18,10 +20,33 @@ const NavigationHeader: React.FC = () => {
     },
   ];
 
+  const [current, setCurrent] = useState<string | null>(null);
+
+  const handleMenuClick = (e: any) => {
+    setCurrent(e.key); 
+  };
+
+  const handleLogoClick = () => {
+    setCurrent(null); 
+  };
+
   return (
     <Header className={styles.header}>
-    <div className={styles.logo}><Link href={'/'}>My Recipes Book</Link></div>
-    <Menu mode="horizontal" className={styles.menu} items={items} />
+    <div className={styles.logo}><Link href={'/'} onClick={handleLogoClick}>My Recipes Book</Link></div>
+    <ConfigProvider
+  theme={{
+    components: {
+      Menu: {
+        horizontalItemSelectedColor: 'var(--text-secondary)', 
+        itemColor:'var(--text-primary)'
+      },
+    },
+  }}
+>
+  <Menu mode="horizontal" className={styles.menu} items={items} selectedKeys={current ? [current] : []} 
+  onClick={handleMenuClick}
+  />
+</ConfigProvider>
   </Header>
   );
 };

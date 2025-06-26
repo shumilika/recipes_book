@@ -4,6 +4,7 @@ import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import NavigationHeader from "@/components/NavigationHeader";
 import FooterPage from "@/components/FooterPage";
+import BodyWrapper from "./BodyWrapper";
 
 
 export const metadata: Metadata = {
@@ -19,15 +20,17 @@ export const metadata: Metadata = {
   }>) {
     return (
       <html lang="en">
-        <body>
-        <NavigationHeader />
+        <BodyWrapper>
         <main>
+        <NavigationHeader />
+        
         <StoreProvider>
             {children}
         </StoreProvider>
-        </main>
+        
         <FooterPage/>
-        </body>
+        </main>
+        </BodyWrapper>
       </html>
     );
   }

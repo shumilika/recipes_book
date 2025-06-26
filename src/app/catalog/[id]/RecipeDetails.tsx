@@ -2,16 +2,17 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { fetchRecipeById } from '@/lib/features/recipes/recipesSlice';
-import { Spin, Layout, Row, Col, Button, Popconfirm, notification } from 'antd';
+import { Layout, Row, Col, Button, Popconfirm, notification } from 'antd';
 import type { PopconfirmProps } from 'antd';
 import styles from '@/styles/currentRecipePage.module.css';
 import { deleteDoc, doc } from '@firebase/firestore';
 import { db } from '@/services/firebase.config';
 import { useRouter } from 'next/navigation';
+import LoadingRecipePage from '@/components/LoadingRecipePage';
 
 export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   const dispatch = useAppDispatch();
-  const { currentRecipe, loading, error } = useAppSelector((state) => state.recipes);
+  const { currentRecipe, loading } = useAppSelector((state) => state.recipes);
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
   
@@ -26,10 +27,8 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
     dispatch(fetchRecipeById(recipeId));
   }, [recipeId, dispatch]);
 
-  if (loading) return <Spin/>;
-  if (!currentRecipe) return <div>Recipe not found</div>;
-
   
+  if (!currentRecipe) return <div>Recipe not found</div>;
 
   const handleEdit = () =>{
     router.push(`/edit-recipe/${recipeId}`)
@@ -47,15 +46,19 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
     }
   };
 
-  const confirm: PopconfirmProps['onConfirm'] = (e) => {
+  const confirm: PopconfirmProps['onConfirm'] = () => {
     handleDeleteRecipe()
   };
   
 
+
+
   return (
     <Layout className={styles.content}>
-    
-      <Row justify="center" className={styles.recipeHeader}>
+  {loading
+  ? <LoadingRecipePage/>
+  :<>
+  <Row justify="center" className={styles.recipeHeader}>
         <Col span={20}>
           <h1 className={styles.recipeTitle}>{currentRecipe.title}</h1>
           <img
@@ -66,9 +69,12 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
         </Col>
       </Row>
       <Row justify="center" className={styles.recipeDetails}>
-        <Col span={20}>
+      <Col>
+        
+      <Row justify='space-around'>
+        <Col span={8}>
          <div className={styles.ingredients}>
-         <h2>Ингредиенты:</h2>
+         <h2>Ingredients:</h2>
           <ul>
             {currentRecipe.ingredients.map((ingredient, index) => (
                 <li key={index}>
@@ -77,18 +83,23 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
             ))}
           </ul>
          </div>
+         </Col>
+
+         <Col span={12}>
          <div className={styles.steps}>
-         <h2>Шаги приготовления:</h2>
+         <h2>Cooking steps:</h2>
           <ol>
             {currentRecipe.cooking_steps.map((step, index) => (
-              <li key={index}>{step}</li>
+              <div key={index}><li>{step}</li><br /></div>
             ))}
           </ol>
          </div>
+         </Col>
+        </Row>
          <Row justify="center" className={styles.buttonsRow}>
-              <Col>
+              <Col >
                 <Button type="primary" className={styles.editButton} onClick={handleEdit}>
-                  Редактировать
+                  Edit
                 </Button>
               </Col>
               <Col>
@@ -101,13 +112,17 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
                   cancelText="Cancel"
                 >
                   <Button color={"danger"} className={styles.deleteButton}>
-                    Удалить
+                    Delete
                   </Button>
                 </Popconfirm>
               </Col>
             </Row>
-        </Col>
+      </Col>
+       
       </Row>
+  </>
+  }
+      
     </Layout>
   );
 }

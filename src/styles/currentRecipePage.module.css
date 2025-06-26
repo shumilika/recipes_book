@@ -1,6 +1,6 @@
 .content {
     padding: 20px;
-    background-color: #E6F2F2; 
+    background-color: var(--background); 
   }
   
   .recipeHeader {
@@ -22,10 +22,11 @@
   }
   
   .recipeDetails {
-    background-color: white;
+    /* background-color: white; */
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    /* border-radius: 8px; */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
   }
   
   .ingredients, .steps {
@@ -48,15 +49,25 @@
   }
   
   .buttonsRow {
-    margin-top: 30px;
+    margin-top: 10px;
   }
   
   .editButton {
     margin-right: 20px;
+    background-color: var(--primary);
+  }
+  .editButton:hover{
+    background-color: var(--secondary) !important;
   }
   
   .deleteButton {
-    background-color: #d32f2f;
-    color: white;
+    background-color: rgb(176, 42, 25);
+    color: #fff;
+    border: 0;
+  }
+
+  .deleteButton:hover{
+    color: rgb(176, 42, 25) !important;
+    background-color: var(--neutral);
   }
   

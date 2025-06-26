@@ -1,52 +1,75 @@
 'use client';
-import { Button, Col, Layout, Row, Spin } from 'antd';
-import React, { useEffect } from 'react';
-import { SearchOutlined } from '@ant-design/icons';
+import { Button, Col, Layout, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
 import styles from '@/styles/catalog.module.css'
 import { Content } from 'antd/es/layout/layout';
 import { RootState } from '@/lib/store';
 import { fetchRecipes } from '@/lib/features/recipes/recipesSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import RecipeFilter from '@/components/RecipeFilter';
+import LoadingSkeleton from '../../components/LoadingCatalog';
+import Link from 'next/link';
 
 const page:React.FC = () => {
 
   const {recipesList, loading, error} = useAppSelector((state: RootState)=>state.recipes) 
   const dispatch = useAppDispatch()
 
+  const [filteredRecipes, setFilteredRecipes] = useState(recipesList);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchIngredient, setSearchIngredient] = useState<string>('');
+
   useEffect(()=>{
     dispatch(fetchRecipes())
   },[dispatch])
 
-  if (loading) {
-    return <Spin/>;
-  }
+  
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  useEffect(() => {
+    setFilteredRecipes(
+      recipesList.filter((recipe) => {
+        const matchesCategory = !selectedCategory || recipe.category === selectedCategory;
+        const matchesIngredient =
+          !searchIngredient ||
+          recipe.ingredients.some((ingredient: { name: string }) =>
+            ingredient.name.toLowerCase().includes(searchIngredient.toLowerCase())
+          );
+
+        return matchesCategory && matchesIngredient;
+      })
+    );
+  }, [recipesList, selectedCategory, searchIngredient]);
+
+
+
 
     return (
      
         <Layout className={styles.layout}>
            <Content className={styles.content}>
-      <Button
-        icon={<SearchOutlined />}
-        type="primary"
-        className={styles.searchButton}
-      >
-        Search
-      </Button>
+           {/* <RecipeFilter
+          onApply={(category, ingredient) => {
+            setSelectedCategory(category);
+            setSearchIngredient(ingredient);
+          }}
+        /> */}
 
-      <Row gutter={[16, 16]} justify="center" className={styles.row}>
-      {recipesList.map((recipe) => (
-            <Col span={4} key={recipe.id}>
-              <Button className={styles.imageButton} href={`/catalog/${recipe.id}`}>
-                <img src={recipe.img_url || '/placeholder.png'} alt={recipe.title} />
-              </Button>
-              <div className={styles.recipeTitle}>{recipe.title}</div>
-            </Col>
-          ))}
-      </Row>
+     {loading 
+     ? <LoadingSkeleton/>
+
+     :  <Row gutter={[32, 24]} justify="space-evenly" className={styles.row}>
+     {recipesList.map((recipe) => (
+           <Col span={6} key={recipe.id}>
+            <Link href={`/catalog/${recipe.id}`} className={styles.linkContainer}>
+             <Button className={styles.imageButton} >
+               <img src={recipe.img_url || '/placeholder.png'} alt={recipe.title} />
+             </Button>
+             <div className={styles.recipeTitle}> {recipe.title}</div>
+             </Link>
+           </Col>
+         ))}
+     </Row>
+    }
     </Content>
         </Layout>
     );

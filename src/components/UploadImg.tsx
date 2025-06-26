@@ -1,8 +1,9 @@
 import { Button, message, Upload } from 'antd';
 import React, { useState } from 'react';
+import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { UploadOutlined } from '@ant-design/icons';
 import { API_KEY } from '@/constants/constants';
-import { RcFile } from 'antd/es/upload';
+import { RcFile,UploadFile} from 'antd/es/upload';
 
 interface UploadProps{
     setUrl: (value:string)=> void;
@@ -11,9 +12,9 @@ interface UploadProps{
 
 const UploadImg:React.FC<UploadProps> = ({setUrl}) => {
 
-    const [fileList, setFileList] = useState([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-    const handleCustomRequest = async ({ file, onSuccess, onError }: any) => {
+    const handleCustomRequest = async ({ file, onSuccess, onError }: UploadRequestOption) => {
         const formData = new FormData();
         formData.append('key', API_KEY);
         formData.append('image', file as RcFile);
@@ -31,15 +32,15 @@ const UploadImg:React.FC<UploadProps> = ({setUrl}) => {
     
           if (response.ok) {
             message.success('Image uploaded successfully!');
-            onSuccess(result);
+            onSuccess?.(result);
             setUrl(result.data.url)
           } else {
             message.error(result.error.message || 'Upload failed.');
-            onError(new Error(result.error.message || 'Upload failed.'));
+            onError?.(new Error(result.error.message || 'Upload failed.'));
           }
         } catch (error) {
           message.error('An error occurred during upload.');
-          onError(error);
+          onError?.(error as Error);
         }
       };
     

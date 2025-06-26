@@ -16,7 +16,7 @@ interface Ingredient {
 }
 
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
 
   const [name, setName] = useState<string>('')
   const [category, setCategory] = useState<string>('')
@@ -226,4 +226,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;

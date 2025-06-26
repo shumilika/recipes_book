@@ -1,10 +1,10 @@
 :root {
-  --background: #FEFBF0;
-  --primary: #ADCDD2; 
-  --secondary: #ACD1C1;
-  --neutral: #F2E4CC;
-  --text-primary: #6DA79E;
-  --text-secondary: #A69383;
+  --background: rgb(229, 224, 218);
+  --primary: rgb(244, 128, 72); 
+  --secondary: #F3C9A4;
+  --neutral: #FFF7ED;
+  --text-primary: #5E3E2E;
+  --text-secondary: #B06C4F;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -64,13 +64,17 @@ h1, h2, h3 {
   transition: background-color 0.3s, color 0.3s;
 } */
 
+.bg-image {
+  background-image: url('/images/bg_vegi.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
 
+.bg-other{
+  background-color: var(--background);
+}
 
-/* main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-} */
 
 header, footer {
   background-color: var(--primary);
@@ -84,3 +88,13 @@ header, footer {
     color-scheme: dark;
   }
 }
+
+:where(.ant-menu-light).ant-menu-horizontal > .ant-menu-item::after,
+:where(.ant-menu-light).ant-menu-horizontal > .ant-menu-submenu::after,
+:where(.ant-menu-light).ant-menu-horizontal > .ant-menu-item-selected::after,
+:where(.ant-menu-light).ant-menu-horizontal > .ant-menu-submenu-selected::after,
+:where(.ant-menu-light).ant-menu-horizontal > .ant-menu-item:hover::after,
+:where(.ant-menu-light).ant-menu-horizontal > .ant-menu-submenu:hover::after {
+  border-bottom: none !important;
+}
+
