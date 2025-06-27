@@ -1,5 +1,5 @@
 'use client';
-import { Menu, Layout, ConfigProvider } from 'antd';
+import { Menu, Layout, ConfigProvider, MenuProps } from 'antd';
 import styles from '@/styles/navigationHeader.module.css';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -22,8 +22,8 @@ const NavigationHeader: React.FC = () => {
 
   const [current, setCurrent] = useState<string | null>(null);
 
-  const handleMenuClick = (e: any) => {
-    setCurrent(e.key); 
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    setCurrent(e.key);
   };
 
   const handleLogoClick = () => {

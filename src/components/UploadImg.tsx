@@ -4,6 +4,7 @@ import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { UploadOutlined } from '@ant-design/icons';
 import { API_KEY } from '@/constants/constants';
 import { RcFile,UploadFile} from 'antd/es/upload';
+import type { UploadChangeParam } from 'antd/es/upload';
 
 interface UploadProps{
     setUrl: (value:string)=> void;
@@ -43,8 +44,7 @@ const UploadImg:React.FC<UploadProps> = ({setUrl}) => {
           onError?.(error as Error);
         }
       };
-    
-      const handleChange = ({ fileList }: any) => {
+      const handleChange = ({ fileList }: UploadChangeParam<UploadFile>) => {
         setFileList(fileList);
       };
     

@@ -91,7 +91,7 @@ const Page: React.FC = () => {
       router.push(`/catalog/${docRef.id}`)
     }
     catch(error){
-
+      console.log(error)
     }
     
   }

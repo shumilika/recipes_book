@@ -1,6 +1,6 @@
 'use client';
 
-import { Skeleton, Card, Row, Col } from 'antd';
+import { Skeleton,  } from 'antd';
 
 export default function LoadingRecipePage() {
   return (

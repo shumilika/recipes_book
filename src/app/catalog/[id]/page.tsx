@@ -1,7 +1,12 @@
 import RecipeDetails from './RecipeDetails';
 
-export default async function RecipePage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+type PageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+};
 
-  return <RecipeDetails recipeId={id} />;
+export default async function RecipePage({ params }: PageProps) {
+  const resolvedParams = await params
+  return <RecipeDetails recipeId={resolvedParams.id} />;
 }

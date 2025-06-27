@@ -6,18 +6,19 @@ import { Content } from 'antd/es/layout/layout';
 import { RootState } from '@/lib/store';
 import { fetchRecipes } from '@/lib/features/recipes/recipesSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import RecipeFilter from '@/components/RecipeFilter';
+// import RecipeFilter from '@/components/RecipeFilter';
 import LoadingSkeleton from '../../components/LoadingCatalog';
 import Link from 'next/link';
+import Image from 'next/image';
 
-const page:React.FC = () => {
+const Page:React.FC = () => {
 
-  const {recipesList, loading, error} = useAppSelector((state: RootState)=>state.recipes) 
+  const {recipesList, loading} = useAppSelector((state: RootState)=>state.recipes) 
   const dispatch = useAppDispatch()
 
-  const [filteredRecipes, setFilteredRecipes] = useState(recipesList);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchIngredient, setSearchIngredient] = useState<string>('');
+  const [, setFilteredRecipes] = useState(recipesList);
+  const [selectedCategory, ] = useState<string | null>(null);
+  const [searchIngredient, ] = useState<string>('');
 
   useEffect(()=>{
     dispatch(fetchRecipes())
@@ -62,7 +63,8 @@ const page:React.FC = () => {
            <Col span={6} key={recipe.id}>
             <Link href={`/catalog/${recipe.id}`} className={styles.linkContainer}>
              <Button className={styles.imageButton} >
-               <img src={recipe.img_url || '/placeholder.png'} alt={recipe.title} />
+               <Image src={recipe.img_url || '/placeholder.png'} alt={recipe.title}  width={500}
+      height={500} />
              </Button>
              <div className={styles.recipeTitle}> {recipe.title}</div>
              </Link>
@@ -75,4 +77,4 @@ const page:React.FC = () => {
     );
 };
 
-export default page;
+export default Page;

@@ -9,6 +9,7 @@ import { deleteDoc, doc } from '@firebase/firestore';
 import { db } from '@/services/firebase.config';
 import { useRouter } from 'next/navigation';
 import LoadingRecipePage from '@/components/LoadingRecipePage';
+import Image from 'next/image';
 
 export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   const dispatch = useAppDispatch();
@@ -42,6 +43,7 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
         router.push('/catalog');
       }, 2000);
     } catch (error) {
+      console.log(error)
       openNotification('error','Failed to delete the recipe!')
     }
   };

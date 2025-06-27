@@ -17,7 +17,7 @@ interface Ingredient {
 }
 
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
   
   const { id: recipeId } = useParams() as {id: string}
   const { currentRecipe } = useAppSelector((state) => state.recipes);
@@ -118,7 +118,7 @@ const page: React.FC = () => {
       router.push(`/catalog/${recipeId}`)
     }
     catch(error){
-
+      console.log(error)
     }
     
   }
@@ -253,4 +253,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;
