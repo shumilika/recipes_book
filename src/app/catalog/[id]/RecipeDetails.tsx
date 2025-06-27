@@ -63,10 +63,12 @@ export default function RecipeDetails({ recipeId }: { recipeId: string }) {
   <Row justify="center" className={styles.recipeHeader}>
         <Col span={20}>
           <h1 className={styles.recipeTitle}>{currentRecipe.title}</h1>
-          <img
+          <Image
             src={currentRecipe.img_url}
             alt={currentRecipe.title}
             className={styles.recipeImage}
+            width={500}
+            height={500}
           />
         </Col>
       </Row>
